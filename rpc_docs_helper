@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+# Distributed under the MIT software license, see the accompanying
+# file LICENSE or https://www.opensource.org/licenses/MIT.
+"""Usage:
+  rpc_docs.py generate --output-dir=<path> [COMMAND]
+  rpc_docs.py get-help COMMAND
+  rpc_docs.py import-see-also MARKDOWN_DIR ANNOTATIONS_FILE
+  rpc_docs.py clean-annotations ANNOTATIONS_FILE
+  rpc_docs.py show-removed MARKDOWN_DIR
+  rpc_docs.py -h | --help
+
+Arguments:
+  COMMAND           Name of the command to be rendered. If no command is given
+                    the help is rendered for all commands.
+  ANNOTATIONS_FILE  Name of annotations JSON file
+  MARKDOWN_DIR      Name of directory with markdown files
+
+  For `generate`, `get-help`, and `show-removed` you need to set the environment
+  variable BITCOIN_CLI_CMD to a command able to run the cli. This should include
+  paths and required options if necessary, e.g. `/my/path/bitcoin-cli -regtest`.
+
+Options:
+  -h, --help           Show this help
+  --output-dir=<path>  Output directory where the rendered data is written
+"""
+from docopt import docopt
+import sys
+
+from renderer_markdown import RendererMarkdown
+from cli_bitcoin import CliBitcoin
+from cli_controller import CliController
+
+
+def main():
+    arguments = docopt(__doc__)
+    output_dir = arguments["--output-dir"]
+
+    controller = CliController()
+    if arguments["generate"]:
+        renderer = RendererMarkdown(output_dir)
+        controller.generate(CliBitcoin(), renderer, arguments["COMMAND"])
+    elif arguments["get-help"]:
+        controller.get_help(CliBitcoin(), arguments["COMMAND"])
+    elif arguments["import-see-also"]:
+        controller.import_see_also(
+            arguments["MARKDOWN_DIR"], arguments["ANNOTATIONS_FILE"])
+    elif arguments["clean-annotations"]:
+        controller.clean_annotations(arguments["ANNOTATIONS_FILE"])
+    elif arguments["show-removed"]:
+        controller.show_removed(CliBitcoin(), arguments["MARKDOWN_DIR"])
+    else:
+        sys.exit("Unknown command. Exiting.")
+
+
+if __name__ == '__main__':
+    main()
