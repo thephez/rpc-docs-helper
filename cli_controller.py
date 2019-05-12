@@ -7,6 +7,7 @@ from generator import Generator
 from cli_caller import CliCaller
 from annotations import Annotations
 from help_parser import HelpParser
+from references import References
 
 
 class CliController:
@@ -28,6 +29,14 @@ class CliController:
         annotations = Annotations(annotations_file)
         annotations.clean_annotations()
 
+    def mark_removed(self, annotations_file, version, command):
+        annotations = Annotations(annotations_file)
+        annotations.mark_removed(version, command)
+
+    def mark_added(self, annotations_file, version, command):
+        annotations = Annotations(annotations_file)
+        annotations.mark_added(version, command)
+
     def show_removed(self, cli, markdown_dir):
         commands = HelpParser().parse_help_overview(CliCaller(cli).help()).flat()
         removed_commands = []
@@ -37,3 +46,13 @@ class CliController:
                 removed_commands.append(command)
         for command in sorted(removed_commands):
             print(command)
+
+    def show_missing(self, cli, annotations_file):
+        commands = HelpParser().parse_help_overview(CliCaller(cli).help()).flat()
+        annotations = Annotations(annotations_file)
+        annotations.show_missing(commands)
+
+    def update_references(self, cli, docs_dir):
+        commands = HelpParser().parse_help_overview(CliCaller(cli).help()).flat()
+        references = References(docs_dir)
+        references.update(commands)

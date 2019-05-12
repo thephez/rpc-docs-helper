@@ -1,5 +1,5 @@
 # Distributed under the MIT software license, see the accompanying
-# file LICENSE or http://www.opensource.org/licenses/MIT.
+# file LICENSE or https://www.opensource.org/licenses/MIT.
 
 import os
 import re
@@ -44,7 +44,7 @@ class Page:
 class RendererMarkdown:
     def __init__(self, output_dir):
         self.output_dir = Path(output_dir)
-        self.annotations = Annotations("annotations-bitcoin-0.17.json")
+        self.annotations = Annotations("annotations-bitcoin-0.18.json")
 
     def add_version_note(self, page):
         if "added" in self.annotation:
@@ -71,6 +71,7 @@ class RendererMarkdown:
 
     def add_see_also(self, page):
         if "see_also" in self.annotation:
+            page.text("*See also*\n")
             see_also = self.annotation["see_also"]
             if "commands" in see_also:
                 for command in see_also["commands"]:
@@ -181,9 +182,14 @@ class RendererMarkdown:
         if "summary" in self.annotation:
             summary = self.annotation["summary"]
             description = full_description
-        elif self.help_data["description"]:
-            summary = uncapitalize(full_description.partition(".")[0]) + "."
-            description = full_description[len(summary) + 1:].lstrip()
+        elif full_description:
+            if "." in full_description:
+                summary = uncapitalize(full_description.partition(".")[0]) + "."
+                description = full_description[len(summary) + 1:].lstrip()
+            else:
+                summary = uncapitalize(full_description.rstrip()) + "."
+                description = ""
+            summary = " ".join(summary.splitlines())
         else:
             summary = "does %s." % display_name(self.command)
             description = None
@@ -272,12 +278,13 @@ class RendererMarkdown:
                             with page.tag("highlight", "bash"):
                                 page.text(example[2:].rstrip())
                     else:
-                        if not example.startswith("As json rpc") and not example.startswith("As a json rpc"):
+                        if (not example.startswith("As json rpc") and
+                            not example.startswith("As a json rpc") and
+                            not example.startswith("As a JSON-RPC")):
                             page.text(example)
                             page.nl()
                 page.nl()
 
-            page.text("*See also*\n")
             self.add_see_also(page)
 
         return page.out
@@ -307,7 +314,29 @@ class RendererMarkdown:
                 page, "Updated", version, bold=bold)
         page.nl()
 
-    def render_overview_page(self, all_commands):
+    def render_version_info(self, page):
+        with page.tag("comment"):
+            page.text("""Styling notes: use highly-visible style for upcoming changes (not yet
+released) and changes made in the last 6 months.  Use less-visible
+style for changes made up to two years ago.  Don't point out
+changes made more than two years ago.
+
+Use v0.n.n in abbreviation title to prevent autocrossrefing.""")
+        page.nl()
+        page.text("<!-- Deprecated -->")
+        page.tag("assign", "DEPRECATED='**<abbr title=\"Deprecated; will be removed in a future version of Bitcoin Core\">Deprecated</abbr>**'")
+
+        self.add_version_helpers(page, "0.14.1", "April 2017", bold=True)
+        self.add_version_helpers(
+            page, "0.14.0", "March 2017", new=True, bold=True)
+        self.add_version_helpers(page, "0.13.1", "September 2016")
+        self.add_version_helpers(page, "0.13.0", "August 2016", new=True)
+        self.add_version_helpers(page, "0.12.1", "April 2016")
+        self.add_version_helpers(page, "0.12.0", "February 2016", new=True)
+        self.add_version_helpers(
+            page, "0.11.0", "July 2015", new=True, updated=False)
+
+    def render_overview_page(self, all_commands, render_version_info=True):
         with open(self.output_dir / "quick-reference.md", "w") as file:
             page = Page()
 
@@ -318,26 +347,9 @@ class RendererMarkdown:
             page.text("#### Quick Reference {#rpc-quick-reference}")
             page.tag("include", "helpers/subhead-links.md")
             page.nl()
-            with page.tag("comment"):
-                page.text("""Styling notes: use highly-visible style for upcoming changes (not yet
-released) and changes made in the last 6 months.  Use less-visible
-style for changes made up to two years ago.  Don't point out
-changes made more than two years ago.
 
-Use v0.n.n in abbreviation title to prevent autocrossrefing.""")
-            page.nl()
-            page.text("<!-- Deprecated -->")
-            page.tag("assign", "DEPRECATED='**<abbr title=\"Deprecated; will be removed in a future version of Bitcoin Core\">Deprecated</abbr>**'")
-
-            self.add_version_helpers(page, "0.14.1", "April 2017", bold=True)
-            self.add_version_helpers(
-                page, "0.14.0", "March 2017", new=True, bold=True)
-            self.add_version_helpers(page, "0.13.1", "September 2016")
-            self.add_version_helpers(page, "0.13.0", "August 2016", new=True)
-            self.add_version_helpers(page, "0.12.1", "April 2016")
-            self.add_version_helpers(page, "0.12.0", "February 2016", new=True)
-            self.add_version_helpers(
-                page, "0.11.0", "July 2015", new=True, updated=False)
+            if render_version_info:
+                self.render_version_info(page)
 
             page.text("""<!-- the summaries used below are defined in the files for the
      particular RPC and aggregated into this helper file by the makefile
@@ -364,17 +376,18 @@ default.
                         item += "[rpc " + cmd + "]: "
                         item += "{{summary_" + \
                             uncapitalize(display_name(cmd)) + "}}"
-                        annotation = self.annotations.annotation(cmd)
-                        if "added" in annotation:
-                            item += " {{NEW%s}}" % annotation["added"].replace(
-                                ".", "_")
-                        if "added" in annotation and "changed" in annotation:
-                            item += ","
-                        if "changed" in annotation:
-                            item += " {{UPDATED%s}}" % annotation["changed"].replace(
-                                ".", "_")
-                        if "deprecated" in annotation:
-                            item += " {{DEPRECATED}}"
+                        if render_version_info:
+                            annotation = self.annotations.annotation(cmd)
+                            if "added" in annotation:
+                                item += " {{NEW%s}}" % annotation["added"].replace(
+                                    ".", "_")
+                            if "added" in annotation and "changed" in annotation:
+                                item += ","
+                            if "changed" in annotation:
+                                item += " {{UPDATED%s}}" % annotation["changed"].replace(
+                                    ".", "_")
+                            if "deprecated" in annotation:
+                                item += " {{DEPRECATED}}"
                         page.text(item)
                     page.nl()
                 page.nl()

@@ -19,6 +19,10 @@ class Annotations:
         with open(self.filename) as file:
             self.annotations = json.load(file)
 
+    def save(self):
+        with open(self.filename, "w") as file:
+            file.write(json.dumps(self.annotations, indent=2, sort_keys=True))
+
     def annotation(self, command):
         if command in self.annotations:
             return self.annotations[command]
@@ -57,17 +61,58 @@ class Annotations:
             file.write(json.dumps(annotations, indent=2, sort_keys=True))
 
     def clean_annotations(self):
-        with open(self.filename) as file:
-            annotations = json.load(file)
-        to_be_removed = []
-        for command in annotations:
-            annotation = annotations[command]
+        self.load()
+
+        to_be_cleaned = []
+        removed_commands = []
+        for command in self.annotations:
+            annotation = self.annotations[command]
             if "see_also" in annotation:
                 if annotation["see_also"] == {"commands": [""]}:
                     annotation.pop("see_also")
             if annotation == {}:
-                to_be_removed.append(command)
-        for command in to_be_removed:
-            annotations.pop(command)
-        with open(self.filename, "w") as file:
-            file.write(json.dumps(annotations, indent=2, sort_keys=True))
+                to_be_cleaned.append(command)
+            if "removed" in annotation:
+                removed_commands.append(command)
+
+        for command in to_be_cleaned:
+            self.annotations.pop(command)
+
+        for command in self.annotations:
+            annotation = self.annotations[command]
+            if "see_also" in annotation:
+                if "commands" in annotation["see_also"]:
+                    commands = annotation["see_also"]["commands"]
+                    for removed_command in removed_commands:
+                        if removed_command in commands:
+                            commands.remove(removed_command)
+                    if not commands:
+                        annotation["see_also"].pop("commands")
+                    if not annotation["see_also"]:
+                        annotation.pop("see_also")
+
+        self.save()
+
+    def mark_removed(self, version, command):
+        self.load()
+        if not command in self.annotations:
+            self.annotations[command] = {}
+        annotation = self.annotations[command]
+        annotation["removed"] = version
+        if "see_also" in annotation:
+            annotation.pop("see_also")
+        self.save()
+
+    def mark_added(self, version, command):
+        self.load()
+        if not command in self.annotations:
+            self.annotations[command] = {}
+        annotation = self.annotations[command]
+        annotation["added"] = version
+        self.save()
+
+    def show_missing(self, commands):
+        self.load()
+        for command in commands:
+            if not command in self.annotations:
+                print(command)

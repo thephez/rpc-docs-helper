@@ -17,6 +17,13 @@ def test_display_name():
     assert display_name("listtransactions") == "ListTransactions"
     assert display_name("listwallets") == "ListWallets"
     assert display_name("getaddressesbyaccount") == "GetAddressesByAccount"
+    assert display_name("submitheader") == "SubmitHeader"
+    assert display_name("getnodeaddresses") == "GetNodeAddresses"
+    assert display_name("joinpsbts") == "JoinPsbts"
+    assert display_name("utxoupdatepsbt") == "UtxoUpdatePsbt"
+    assert display_name("deriveaddresses") == "DeriveAddresses"
+    assert display_name("setlabel") == "SetLabel"
+    assert display_name("listlabels") == "ListLabels"
 
 
 def test_capitalize():

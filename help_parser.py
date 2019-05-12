@@ -68,7 +68,7 @@ class HelpParser:
                 {'title_extension': result_match.group(1)})
         elif line == "Arguments:":
             self.section = self.Section.arguments
-        elif re.match(r'Examples?:?', line):
+        elif re.match(r'Examples?:', line):
             self.section = self.Section.examples
         return previous_section != self.section
 
@@ -157,7 +157,7 @@ class HelpParser:
 
             elif self.section == self.Section.result:
                 if not self.next_section(line, help_data):
-                    if line.startswith("{") or line.startswith("["):
+                    if line.startswith("{") or (line.startswith("[") and not "]" in line):
                         self.section = self.Section.literal_result
                         result_data = help_data['results'][-1]
                         result_data.update(

@@ -10,7 +10,8 @@
 # a word already is there
 word_list = ["abort", "account", "address", "balance", "block", "by", "chain",
              "change", "clear", "connection", "convert", "decode",
-             "fee", "generate", "get", "hash", "import", "info", "key",
+             "fee", "generate", "get", "hash", "header",
+             "import", "info", "key", "label",
              "message", "multi", "network", "node", "out", "psbt", "pool",
              "priv", "pruned", "list", "raw", "save", "send", "smart", "totals",
              "transaction", "tx", "unspent", "wallet",
@@ -26,6 +27,11 @@ explicit_display_names = {
     "sethdseed": "SetHdSeed",
     "getaddressesbylabel": "GetAddressesByLabel",
     "getaddressesbyaccount": "GetAddressesByAccount",
+    "getnodeaddresses": "GetNodeAddresses",
+    "joinpsbts": "JoinPsbts",
+    "utxoupdatepsbt": "UtxoUpdatePsbt",
+    "deriveaddresses": "DeriveAddresses",
+    "listlabels": "ListLabels",
 }
 
 

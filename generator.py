@@ -19,7 +19,8 @@ class Generator:
         help_output = self.cli.help()
         command_list = HelpParser().parse_help_overview(help_output)
 
-        self.renderer.render_overview_page(command_list.grouped())
+        self.renderer.render_overview_page(command_list.grouped(),
+                                           render_version_info=False)
 
         count = 1
         for command in command_list.flat():

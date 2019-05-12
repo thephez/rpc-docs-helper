@@ -18,6 +18,8 @@ def test_process_command_help():
         'gettxoutproof',
         'pruneblockchain',
         'getmemoryinfo',
+        'analyzepsbt',
+        'deriveaddresses',
     ]
     for cmd in cmds:
         with open(test_data_dir / cmd) as file:
@@ -44,3 +46,26 @@ def test_yaml_escape():
     r = RendererMarkdown("")
 
     assert r.yaml_escape('a "string"') == 'a \\"string\\"'
+
+
+def test_split_description():
+    r = RendererMarkdown("")
+    r.annotation = {}
+
+    summary, description = r.split_description("One line\n")
+    assert summary == "one line."
+    assert description == ""
+
+    summary, description = r.split_description("One line.")
+    assert summary == "one line."
+    assert description == ""
+
+    summary, description = r.split_description("First line\nsecond line\n")
+    print(summary)
+    assert summary == "first line second line."
+    assert description == ""
+
+    summary, description = r.split_description("First\nsecond. Third.\n")
+    print(summary)
+    assert summary == "first second."
+    assert description == "Third.\n"
