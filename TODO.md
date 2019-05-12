@@ -20,6 +20,8 @@
   * sighashtype parameter table
     * signrawtransactionwithwallet
     * walletprocesspsbt
+  * multi-line argument description
+    * listsinceblock (include_removed)
 
 * Results of example commands
   (https://github.com/cornelius/rpc-docs-helper/issues/4)
