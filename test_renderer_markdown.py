@@ -5,7 +5,7 @@ from help_parser import HelpParser
 from pathlib import Path
 import os
 
-test_data_dir = Path(os.path.dirname(__file__)) / "test_data.markdown"
+test_data_dir = Path(os.path.dirname(__file__)) / "test_data"
 
 
 def test_process_command_help():
@@ -25,7 +25,7 @@ def test_process_command_help():
         with open(str(test_data_dir / cmd)) as file:
             input = file.read()
             help_data = HelpParser().parse_help_command(input)
-        with open(str(test_data_dir / (cmd + ".md"))) as file:
+        with open(str(test_data_dir / "markdown" / (cmd + ".md"))) as file:
             expected_output = file.read()
         assert RendererMarkdown("").process_command_help(
             help_data) == expected_output
