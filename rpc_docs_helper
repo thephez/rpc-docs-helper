@@ -2,7 +2,7 @@
 # Distributed under the MIT software license, see the accompanying
 # file LICENSE or https://www.opensource.org/licenses/MIT.
 """Usage:
-  rpc_docs_helper generate --output-dir=<path> [COMMAND]
+  rpc_docs_helper generate --output-dir=<path> --rst [COMMAND]
   rpc_docs_helper get-help COMMAND
   rpc_docs_helper import-see-also MARKDOWN_DIR ANNOTATIONS_FILE
   rpc_docs_helper clean-annotations ANNOTATIONS_FILE
@@ -42,11 +42,13 @@ Options:
   -h, --help           Show this help
   --output-dir=<path>  Output directory where the rendered data is written
   --docs-dir=<path>    Root directory of documentation repository
+  --rst                Generate reStructuredText instead of Markdown
 """
 from docopt import docopt
 import sys
 
 from renderer_markdown import RendererMarkdown
+from renderer_rst import RendererRst
 from cli_bitcoin import CliBitcoin
 from cli_controller import CliController
 
@@ -57,7 +59,10 @@ def main():
 
     controller = CliController()
     if arguments["generate"]:
-        renderer = RendererMarkdown(output_dir)
+        if arguments["--rst"]:
+            renderer = RendererRst(output_dir)
+        else:
+            renderer = RendererMarkdown(output_dir)
         controller.generate(CliBitcoin(), renderer, arguments["COMMAND"])
     elif arguments["get-help"]:
         controller.get_help(CliBitcoin(), arguments["COMMAND"])

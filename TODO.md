@@ -1,5 +1,11 @@
 # RPC helper To do
 
+* Add RST
+  * Add basic renderer
+  * Try rendered result
+  * Add unit tests
+  * Refactor (share between backends, abstract rst page)
+
 * Fix description
   * gettxoutproof (first line cut off before "txids")
 
