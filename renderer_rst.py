@@ -171,7 +171,7 @@ class RendererRst:
         output += self.title(help_data["command"].split(" ")[0])
         output += "\n"
         output += '``' + help_data["command"] + '``\n\n'
-        output += help_data['description'] + '\n'
+        output += help_data['description'].replace("*", r"\*") + '\n'
         if help_data['arguments']:
             number = 1
             for argument in help_data['arguments']:

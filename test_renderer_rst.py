@@ -13,6 +13,7 @@ def test_process_command_help():
     cmds = [
         'analyzepsbt',
         'deriveaddresses',
+        'getblockstats',
     ]
     for cmd in cmds:
         with open(str(test_data_dir / cmd)) as file:

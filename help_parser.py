@@ -105,6 +105,7 @@ class HelpParser:
 
     def parse_help_command(self, help_text):
         self.section = self.Section.command
+        self.literal_description = False
         help_data = {
             "command": "",
             "description": "",
@@ -122,6 +123,12 @@ class HelpParser:
             elif self.section == self.Section.description:
                 if not self.next_section(line, help_data):
                     if line:
+                        if line.startswith(" "):
+                            self.literal_description = True
+                        else:
+                            if self.literal_description:
+                                help_data["description"] += '\n'
+                                self.literal_description = False
                         if help_data["description"] and help_data["description"][-2] in ['.', ':']:
                             help_data["description"] += '\n'
                         help_data["description"] += line.rstrip() + '\n'
