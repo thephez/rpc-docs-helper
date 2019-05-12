@@ -22,10 +22,10 @@ def test_process_command_help():
         'deriveaddresses',
     ]
     for cmd in cmds:
-        with open(test_data_dir / cmd) as file:
+        with open(str(test_data_dir / cmd)) as file:
             input = file.read()
             help_data = HelpParser().parse_help_command(input)
-        with open(test_data_dir / (cmd + ".md")) as file:
+        with open(str(test_data_dir / (cmd + ".md"))) as file:
             expected_output = file.read()
         assert RendererMarkdown("").process_command_help(
             help_data) == expected_output

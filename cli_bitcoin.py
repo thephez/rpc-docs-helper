@@ -13,5 +13,6 @@ class CliBitcoin:
             sys.exit("BITCOIN_CLI_PATH is not set. Set this to the command to "
                      "run the bitcoin-cli including any options. Exiting now.")
 
-        self.cli_path = Path(cli_path.split(" ")[0]).expanduser()
+        self.cli_path = Path(cli_path.split(" ")[0])
+#        self.cli_path = Path(cli_path.split(" ")[0]).expanduser()
         self.cli_args = cli_path.split(" ")[1:]

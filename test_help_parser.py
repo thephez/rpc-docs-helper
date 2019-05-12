@@ -9,7 +9,7 @@ test_data_dir = Path(os.path.dirname(__file__)) / "test_data"
 
 
 def test_parse_help():
-    with open(test_data_dir / "examplecommand") as file:
+    with open(str(test_data_dir / "examplecommand")) as file:
         input = file.read()
     result = HelpParser().parse_help_command(input)
     assert result["command"] == 'examplecommand "arg" "object" ( "optional-arg" )'

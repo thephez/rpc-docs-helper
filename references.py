@@ -18,7 +18,7 @@ class References:
     def update_file(self, commands, path, start_marker, content_call,
                     replace_start_marker=False, end_marker=None):
         file_path = self.docs_dir / path
-        print(f"Updating file {file_path} ...")
+        print("Updating file %s ..." % file_path)
         output = ""
         with file_path.open() as ref_file:
             skip_lines = False
@@ -42,18 +42,19 @@ class References:
 
     def update_references(self, commands):
         self.update_file(commands, Path("_includes", "references.md"), "<!-- RPCs",
-                lambda command : f"[rpc {command}]: /en/developer-reference#{command}")
+                lambda command : "[rpc %s]: /en/developer-reference#%s" % (command, command))
 
     def update_autocrossref(self, commands):
         self.update_file(commands, Path("_autocrossref.yaml"), "## RPCs",
-                lambda command : (f"'`{command}`': rpc {command}\n" +
-                                  f"'`{command}` RPC': rpc {command}"))
+                lambda command : (("'`%s`': rpc %s\n" % (command, command)) +
+                                  ("'`%s` RPC': rpc %s") % (command, command)))
 
     def update_config(self, commands):
         self.update_file(commands, Path("_config.yml"), '  "RPCs":',
-                lambda command : f"    - '{display_name(command)}': \"/en/developer-reference#{command}\"")
+                lambda command : ("    - '%s': \"/en/developer-reference#%s\"" %
+                                  (display_name(command), command)))
 
     def update_api_intro(self, commands):
         self.update_file(commands, Path("_data/devdocs/en/bitcoin-core/api-intro.md"), "/bitcoin-core/rpcs/rpcs/",
-                lambda command : f"{{% include_absolute _data/devdocs/{{{{page.lang}}}}/bitcoin-core/rpcs/rpcs/{command}.md _data/devdocs/en/bitcoin-core/rpcs/rpcs/{command}.md %}}\n",
+                lambda command : "{{% include_absolute _data/devdocs/{{{{page.lang}}}}/bitcoin-core/rpcs/rpcs/%s.md _data/devdocs/en/bitcoin-core/rpcs/rpcs/%s.md %}}\n" % (command, command),
                 replace_start_marker=True, end_marker="/bitcoin-core/rest/")

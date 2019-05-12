@@ -12,6 +12,6 @@ class CliCaller:
         arg = ["help"]
         if cmd:
             arg.append(cmd)
-        result = subprocess.run([self.cli.cli_path] + self.cli.cli_args +
-                                arg, stdout=subprocess.PIPE)
-        return result.stdout.rstrip().decode("utf-8")
+        result = subprocess.check_output([str(self.cli.cli_path)] + self.cli.cli_args +
+                                arg)
+        return result.rstrip().decode("utf-8")
