@@ -210,18 +210,24 @@ class RendererMarkdown:
 
         page.tag(
             "assign", 'filename="_data/devdocs/en/bitcoin-core/rpcs/rpcs/%s.md"' % self.command)
-        page.text("\n##### %s" % name)
+        title = "\n##### %s" % name
+        if self.command == "ping":
+            title += " {#ping-rpc}"
+            suffix = "-rpc"
+        else:
+            suffix = ""
+        page.text(title)
         page.tag("include", "helpers/subhead-links.md")
         page.nl()
         summary, description = self.split_description(help_data["description"])
-        page.tag("assign", 'summary_%s="%s"' % (lower_name, summary))
+        page.tag("assign", 'summary_%s%s="%s"' % (lower_name, suffix, summary))
         page.nl()
         with page.tag("autocrossref"):
             page.nl()
             self.add_version_note(page)
             self.add_wallet_note(page)
-            page.text("The `%s` RPC {{summary_%s}}\n" %
-                      (self.command, lower_name))
+            page.text("The `%s` RPC {{summary_%s%s}}\n" %
+                      (self.command, lower_name, suffix))
             if description:
                 quoted = False
                 for line in description.splitlines():
@@ -389,8 +395,10 @@ default.
                         cmd = command.split(" ")[0]
                         item = "* [" + display_name(cmd) + "]"
                         item += "[rpc " + cmd + "]: "
-                        item += "{{summary_" + \
-                            uncapitalize(display_name(cmd)) + "}}"
+                        item += "{{summary_" + uncapitalize(display_name(cmd))
+                        if cmd == "ping":
+                            item += "-rpc"
+                        item += "}}"
                         if render_version_info:
                             annotation = self.annotations.annotation(cmd)
                             if "added" in annotation:

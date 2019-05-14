@@ -9,6 +9,12 @@ class References:
     def __init__(self, docs_dir):
         self.docs_dir = Path(docs_dir)
 
+    def anchor(self, command):
+        if command == "ping":
+            return "ping-rpc"
+        else:
+            return command
+
     def update(self, commands):
         self.update_references(commands)
         self.update_autocrossref(commands)
@@ -42,7 +48,7 @@ class References:
 
     def update_references(self, commands):
         self.update_file(commands, Path("_includes", "references.md"), "<!-- RPCs",
-                lambda command : "[rpc %s]: /en/developer-reference#%s" % (command, command))
+                lambda command : "[rpc %s]: /en/developer-reference#%s" % (command, self.anchor(command)))
 
     def update_autocrossref(self, commands):
         self.update_file(commands, Path("_autocrossref.yaml"), "## RPCs",
@@ -52,9 +58,10 @@ class References:
     def update_config(self, commands):
         self.update_file(commands, Path("_config.yml"), '  "RPCs":',
                 lambda command : ("    - '%s': \"/en/developer-reference#%s\"" %
-                                  (display_name(command), command)))
+                                  (display_name(command), self.anchor(command))))
 
     def update_api_intro(self, commands):
         self.update_file(commands, Path("_data/devdocs/en/bitcoin-core/api-intro.md"), "/bitcoin-core/rpcs/rpcs/",
-                lambda command : "{{% include_absolute _data/devdocs/{{{{page.lang}}}}/bitcoin-core/rpcs/rpcs/%s.md _data/devdocs/en/bitcoin-core/rpcs/rpcs/%s.md %}}\n" % (command, command),
+                lambda command : "{%% include_absolute _data/devdocs/{{page.lang}}/bitcoin-core/rpcs/rpcs/%s.md " \
+                                 "_data/devdocs/en/bitcoin-core/rpcs/rpcs/%s.md %%}\n" % (command, command),
                 replace_start_marker=True, end_marker="/bitcoin-core/rest/")

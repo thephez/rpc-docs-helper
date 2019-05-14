@@ -20,6 +20,7 @@ def test_process_command_help():
         'getmemoryinfo',
         'analyzepsbt',
         'deriveaddresses',
+        'ping',
     ]
     for cmd in cmds:
         with open(str(test_data_dir / cmd)) as file:

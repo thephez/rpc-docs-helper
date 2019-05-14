@@ -193,4 +193,10 @@ class HelpParser:
                 if line:
                     help_data["examples"].append(line)
 
+        self.fixup(help_data)
         return help_data
+
+    def fixup(self, help_data):
+        command = help_data["command"].split(" ")[0]
+        if command == "getblock" or command == "getblockheader":
+            help_data["description"] = help_data["description"].replace("<hash>", "'hash'")
