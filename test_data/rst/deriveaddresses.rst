@@ -20,6 +20,8 @@ or more path elements separated by "/", where "h" represents a hardened child ke
 
 For more information on output descriptors, see the documentation in the doc/descriptors.md file.
 
+    https://example.com
+
 Argument #1 - descriptor
 ~~~~~~~~~~~~~~~~~~~~~~~~
 

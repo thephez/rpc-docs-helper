@@ -223,7 +223,22 @@ class RendererMarkdown:
             page.text("The `%s` RPC {{summary_%s}}\n" %
                       (self.command, lower_name))
             if description:
-                page.text(description)
+                quoted = False
+                for line in description.splitlines():
+                    if line.startswith("    "):
+                        if not quoted:
+                            page.text("{% endautocrossref %}")
+                            page.nl()
+                            quoted = True
+                    elif quoted:
+                        page.nl()
+                        page.text("{% autocrossref %}")
+                        quoted = False
+                    page.text(line)
+                if quoted:
+                    page.nl()
+                    page.text("{% autocrossref %}")
+                page.nl()
 
             if "arguments" in help_data:
                 if not help_data["arguments"]:

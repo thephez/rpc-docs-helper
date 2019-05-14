@@ -11,6 +11,8 @@ In the above, <pubkey> either refers to a fixed public key in hexadecimal notati
 or more path elements separated by "/", where "h" represents a hardened child key.
 For more information on output descriptors, see the documentation in the doc/descriptors.md file.
 
+    https://example.com
+
 Arguments:
 1. descriptor    (string, required) The descriptor.
 2. range         (numeric or array, optional) If a ranged descriptor is used, this specifies the end or the range (in [begin,end] notation) to derive.
