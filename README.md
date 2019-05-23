@@ -5,3 +5,5 @@ Markdown format as used on [dash-docs.github.io](https://github.com/dash-docs/da
 Run `rpc-docs-helper` to get command line help. Run `rpc-docs-helper generate`
 to generate the markdown. Run `pytest` to run the unit tests if you want to work
 on the tool itself.
+
+Before running, set the `CLI_PATH` variable (e.g. `export CLI_PATH="/my/path/dash-cli -testnet"`)
