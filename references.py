@@ -61,7 +61,7 @@ class References:
                                   (display_name(command), self.anchor(command))))
 
     def update_api_intro(self, commands):
-        self.update_file(commands, Path("_data/devdocs/en/bitcoin-core/api-intro.md"), "/bitcoin-core/rpcs/rpcs/",
-                lambda command : "{%% include_absolute _data/devdocs/{{page.lang}}/bitcoin-core/rpcs/rpcs/%s.md " \
-                                 "_data/devdocs/en/bitcoin-core/rpcs/rpcs/%s.md %%}\n" % (command, command),
-                replace_start_marker=True, end_marker="/bitcoin-core/rest/")
+        self.update_file(commands, Path("_includes/devdoc/dash-core/api-intro.md"), "/dash-core/rpcs/rpcs/",
+                lambda command : "{%% include_absolute _includes/devdoc/{{page.lang}}/dash-core/rpcs/rpcs/%s.md " \
+                                 "_includes/devdoc/dash-core/rpcs/rpcs/%s.md %%}\n" % (command, command),
+                replace_start_marker=True, end_marker="/dash-core/rest/")

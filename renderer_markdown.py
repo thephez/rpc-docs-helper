@@ -209,7 +209,7 @@ class RendererMarkdown:
         lower_name = name[0].lower() + name[1:]
 
         page.tag(
-            "assign", 'filename="_data/devdocs/en/bitcoin-core/rpcs/rpcs/%s.md"' % self.command)
+            "assign", 'filename="_includes/devdoc/dash-core/rpcs/rpcs/%s.md"' % self.command)
         title = "\n##### %s" % name
         if self.command == "ping":
             title += " {#ping-rpc}"
@@ -363,7 +363,7 @@ Use v0.n.n in abbreviation title to prevent autocrossrefing.""")
 
             self.add_license_header(page)
             page.tag(
-                "assign", 'filename="_data/devdocs/en/bitcoin-core/rpcs/quick-reference.md"')
+                "assign", 'filename="_includes/devdoc/dash-core/rpcs/quick-reference.md"')
             page.nl()
             page.text("#### Quick Reference {#rpc-quick-reference}")
             page.tag("include", "helpers/subhead-links.md")
