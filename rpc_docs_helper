@@ -49,7 +49,7 @@ import sys
 
 from renderer_markdown import RendererMarkdown
 from renderer_rst import RendererRst
-from cli_bitcoin import CliDash
+from cli_dash import CliDash
 from cli_controller import CliController
 
 
