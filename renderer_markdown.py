@@ -48,7 +48,7 @@ class RendererMarkdown:
 
     def add_version_note(self, page):
         if "added" in self.annotation:
-            page.text("*Added in Bitcoin Core %s*\n" %
+            page.text("*Added in Dash Core %s*\n" %
                       self.annotation["added"])
 
     def add_wallet_note(self, page):
@@ -319,7 +319,7 @@ class RendererMarkdown:
         a = type.upper() + version.replace(".", "_") + "='*"
         if bold:
             a += "*"
-        a += '<abbr title="' + type + ' in Bitcoin Core v' + version + '">'
+        a += '<abbr title="' + type + ' in Dash Core v' + version + '">'
         a += type + ' in ' + version + '</abbr>*'
         if bold:
             a += "*"
@@ -327,7 +327,7 @@ class RendererMarkdown:
         page.tag("assign", a)
 
     def add_version_helpers(self, page, version, date, new=False, updated=True, bold=False):
-        page.text("<!-- Bitcoin Core %s %s -->" % (version, date))
+        page.text("<!-- Dash Core %s %s -->" % (version, date))
         if new:
             self.add_version_helper_assignment(page, "New", version, bold=bold)
         if updated:
@@ -345,7 +345,7 @@ changes made more than two years ago.
 Use v0.n.n in abbreviation title to prevent autocrossrefing.""")
         page.nl()
         page.text("<!-- Deprecated -->")
-        page.tag("assign", "DEPRECATED='**<abbr title=\"Deprecated; will be removed in a future version of Bitcoin Core\">Deprecated</abbr>**'")
+        page.tag("assign", "DEPRECATED='**<abbr title=\"Deprecated; will be removed in a future version of Dash Core\">Deprecated</abbr>**'")
 
         self.add_version_helpers(page, "0.14.1", "April 2017", bold=True)
         self.add_version_helpers(
@@ -387,7 +387,7 @@ Use v0.n.n in abbreviation title to prevent autocrossrefing.""")
                 with page.tag("autocrossref"):
                     page.nl()
                     if category == "Wallet":
-                        page.text("""**Note:** the wallet RPCs are only available if Bitcoin Core was built
+                        page.text("""**Note:** the wallet RPCs are only available if Dash Core was built
 with [wallet support][]{:#term-wallet-support}{:.term}, which is the
 default.
 """)

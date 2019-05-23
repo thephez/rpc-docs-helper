@@ -18,7 +18,7 @@ class RendererRst:
 
     def add_version_note(self, page):
         if "added" in self.annotation:
-            page.text("*Added in Bitcoin Core %s*\n" %
+            page.text("*Added in Dash Core %s*\n" %
                       self.annotation["added"])
 
     def add_wallet_note(self, page):
@@ -233,7 +233,7 @@ class RendererRst:
             output += self.title(category + " RPCs", level=1)
             output += "\n"
             if category == "Wallet":
-                output += """**Note:** the wallet RPCs are only available if Bitcoin Core was built
+                output += """**Note:** the wallet RPCs are only available if Dash Core was built
 with wallet support, which is the default.
 
 """

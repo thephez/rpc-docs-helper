@@ -36,7 +36,7 @@ Arguments:
   For `generate`, `get-help`, and `show-removed` you need to set
   the environment variable BITCOIN_CLI_CMD to a command able to run the cli.
   This should include paths and required options if necessary, e.g.
-  `/my/path/bitcoin-cli -regtest`.
+  `/my/path/dash-cli -regtest`.
 
 Options:
   -h, --help           Show this help
@@ -49,7 +49,7 @@ import sys
 
 from renderer_markdown import RendererMarkdown
 from renderer_rst import RendererRst
-from cli_bitcoin import CliBitcoin
+from cli_bitcoin import CliDash
 from cli_controller import CliController
 
 
@@ -63,16 +63,16 @@ def main():
             renderer = RendererRst(output_dir)
         else:
             renderer = RendererMarkdown(output_dir)
-        controller.generate(CliBitcoin(), renderer, arguments["COMMAND"])
+        controller.generate(CliDash(), renderer, arguments["COMMAND"])
     elif arguments["get-help"]:
-        controller.get_help(CliBitcoin(), arguments["COMMAND"])
+        controller.get_help(CliDash(), arguments["COMMAND"])
     elif arguments["import-see-also"]:
         controller.import_see_also(
             arguments["MARKDOWN_DIR"], arguments["ANNOTATIONS_FILE"])
     elif arguments["clean-annotations"]:
         controller.clean_annotations(arguments["ANNOTATIONS_FILE"])
     elif arguments["show-removed"]:
-        controller.show_removed(CliBitcoin(), arguments["MARKDOWN_DIR"])
+        controller.show_removed(CliDash(), arguments["MARKDOWN_DIR"])
     elif arguments["mark-removed"]:
         controller.mark_removed(arguments["ANNOTATIONS_FILE"],
             arguments["VERSION"], arguments["COMMAND"])
@@ -80,9 +80,9 @@ def main():
         controller.mark_added(arguments["ANNOTATIONS_FILE"],
             arguments["VERSION"], arguments["COMMAND"])
     elif arguments["show-missing"]:
-        controller.show_missing(CliBitcoin(), arguments["ANNOTATIONS_FILE"])
+        controller.show_missing(CliDash(), arguments["ANNOTATIONS_FILE"])
     elif arguments["update-references"]:
-        controller.update_references(CliBitcoin(), arguments["--docs-dir"])
+        controller.update_references(CliDash(), arguments["--docs-dir"])
     else:
         sys.exit("Unknown command. Exiting.")
 
