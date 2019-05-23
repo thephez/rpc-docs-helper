@@ -34,7 +34,7 @@ Arguments:
   VERSION           Client version number
 
   For `generate`, `get-help`, and `show-removed` you need to set
-  the environment variable BITCOIN_CLI_CMD to a command able to run the cli.
+  the environment variable CLI_PATH to a command able to run the cli.
   This should include paths and required options if necessary, e.g.
   `/my/path/dash-cli -regtest`.
 
