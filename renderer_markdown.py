@@ -42,9 +42,9 @@ class Page:
 
 
 class RendererMarkdown:
-    def __init__(self, output_dir):
+    def __init__(self, output_dir, annotations_file="annotations.json"):
         self.output_dir = Path(output_dir)
-        self.annotations = Annotations("annotations-bitcoin-0.18.json")
+        self.annotations = Annotations(annotations_file) #"annotations-bitcoin-0.18.json")
 
     def add_version_note(self, page):
         if "added" in self.annotation:

@@ -1,0 +1,143 @@
+{
+  "example": {
+    "added": "Bitcoin Core 0.12.0",
+    "changed": "Dash Core 0.14.1",
+    "deprecated": true,
+    "args": {
+        "txid": {
+          "type": "hex",
+          "description": "Expanded description of arg to concatenate to help output"
+        }
+    },
+    "see_also": {
+        "commands": [
+          "sendrawtransaction"
+        ],
+        "glossary": [
+            [
+                "p2sh-address",
+                "Pay-To-Script-Hash (P2SH)"
+            ]
+        ],
+        "messages": [
+            [
+                "merkleblock",
+                "A description of the\n  format used for the proof."
+            ]
+        ]
+    },
+    "summary": "Override the summary from the RPC help with different text",
+    "wallet": true
+  },
+  "abandontransaction": {
+    "added": "Bitcoin Core 0.12.0",
+    "args": {
+      "txid": {
+        "type": "hex"
+      }
+    },
+    "see_also": {
+      "commands": [
+        "sendrawtransaction"
+      ]
+    },
+    "summary": "marks an in-wallet transaction and all its in-wallet descendants as abandoned. This allows their inputs to be respent."
+  },
+  "abortrescan": {
+    "summary": "Stops current wallet rescan"
+  },
+  "addmultisigaddress": {
+    "see_also": {
+      "commands": [
+        "createmultisig",
+        "decodescript"
+      ],
+      "glossary": [
+        [
+          "p2sh-address",
+          "Pay-To-Script-Hash (P2SH)"
+        ]
+      ]
+    },
+    "summary": "adds a P2SH multisig address to the wallet.",
+    "wallet": true
+  },
+  "addnode": {
+    "args": {
+      "command": {
+        "description": "What to do with the IP address above.  Options are:<br>\u2022 `add` to add a node to the addnode list.  Up to 8 nodes can be added additional to the default 8 nodes. Not limited by `-maxconnections`<br>\u2022 `remove` to remove a node from the list.  If currently connected, this will disconnect immediately<br>\u2022 `onetry` to immediately attempt connection to the node even if the outgoing connection slots are full; this will only attempt the connection once"
+      },
+      "node": {
+        "description": "The node to add as a string in the form of `<IP address>:<port>`.  The IP address may be a hostname resolvable through DNS, an IPv4 address, an IPv4-as-IPv6 address, or an IPv6 address"
+      }
+    },
+    "changed": "0.14.0",
+    "see_also": {
+      "commands": [
+        "getaddednodeinfo"
+      ]
+    }
+  },
+  "disconnectnode": {
+    "added": "0.12.0",
+    "changed": "0.14.1",
+    "see_also": {
+      "commands": [
+        "addnode",
+        "getaddednodeinfo"
+      ]
+    }
+  },
+  "getaccountaddress": {
+    "deprecated": true,
+    "see_also": {
+      "commands": [
+        "getnewaddress",
+        "getrawchangeaddress",
+        "getaddressesbyaccount"
+      ]
+    }
+  },
+  "getaddressbyaccount": {
+    "deprecated": true
+  },
+  "getblock": {
+    "args": {
+      "blockhash": {
+        "type": "hex"
+      }
+    },
+    "changed": "0.13.0",
+    "see_also": {
+      "commands": [
+        "getblockhash",
+        "getbestblockhash"
+      ]
+    },
+    "summary": "gets a block with a particular header hash from the local block database either as a JSON object or as a serialized block."
+  },
+  "gettxoutproof": {
+    "added": "0.11.0",
+    "see_also": {
+      "commands": [
+        "verifytxoutproof"
+      ],
+      "messages": [
+        [
+          "merkleblock",
+          "A description of the\n  format used for the proof."
+        ]
+      ]
+    }
+  },
+  "setaccount": {
+    "deprecated": true,
+    "see_also": {
+      "commands": [
+        "getaccount",
+        "listaccounts",
+        "getaddressesbyaccount"
+      ]
+    }
+  }
+}
