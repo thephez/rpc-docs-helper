@@ -11,9 +11,12 @@ class CliCaller:
     def help(self, cmd=None):
         arg = ["help"]
         if cmd:
-            # Support RPCs with sub-commands
-            for c in cmd:
-                arg.append(c)
+            if isinstance(cmd, list):
+                # Support RPCs with sub-commands
+                for c in cmd:
+                    arg.append(c)
+            else:
+                arg.append(cmd)
         result = subprocess.check_output([str(self.cli.cli_path)] + self.cli.cli_args +
                                 arg)
         return result.rstrip().decode("utf-8")
