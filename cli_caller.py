@@ -11,9 +11,9 @@ class CliCaller:
     def help(self, cmd=None):
         arg = ["help"]
         if cmd:
-            if isinstance(cmd, list):
+            if ' ' in cmd:
                 # Support RPCs with sub-commands
-                for c in cmd:
+                for c in cmd.split(" "):
                     arg.append(c)
             else:
                 arg.append(cmd)

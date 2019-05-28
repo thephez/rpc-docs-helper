@@ -311,10 +311,7 @@ class RendererMarkdown:
         return page.out
 
     def render_cmd_page(self, command, help_data):
-        if isinstance(command, list):
-            command_file = "-".join(command) + ".md"
-        else:
-            command_file = command + ".md"
+        command_file = command + ".md"
         with open(self.output_dir / "rpcs" / command_file, "w") as file:
             file.write(self.process_command_help(help_data))
 
