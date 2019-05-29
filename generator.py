@@ -15,6 +15,12 @@ class Generator:
         help_data = HelpParser().parse_help_command(command_output)
         self.renderer.render_cmd_page(command, help_data)
 
+        # Check for any sub-commands and generate files for any that are found
+        sub_commands = HelpParser().check_for_sub_commands(command, command_output)
+        if sub_commands:
+            for cmd in sub_commands:
+                self.generate_command(cmd)
+
     def generate_overview(self):
         help_output = self.cli.help()
         command_list = HelpParser().parse_help_overview(help_output)

@@ -200,3 +200,24 @@ class HelpParser:
         command = help_data["command"].split(" ")[0]
         if command == "getblock" or command == "getblockheader":
             help_data["description"] = help_data["description"].replace("<hash>", "'hash'")
+
+    def check_for_sub_commands(self, command, help_text):
+        sub_commands = []
+
+        # RPCs with sub-commands are in the form:
+        # <rpc name> "command" ... (e.g. 'gobject "command" ...')
+        if '"command" ...' in help_text:
+            for line in help_text.splitlines():
+                # Sub-commands are listed in the form:
+                #  <sub-command>    - <description>
+                match = re.match(r'\s+([^\s]*)\s+[-]\s+(.*)', line)
+
+                if match:
+                    name = '{} {}'.format(command, match.group(1))
+                    description = match.group(2)
+                    sub_commands.append(name)
+
+        if not sub_commands:
+            return None
+        else:
+            return sub_commands
