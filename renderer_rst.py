@@ -113,7 +113,7 @@ class RendererRst:
 - n: "`result`"
   t: "null"
   p: "Required<br>(exactly 1)"
-  d: "JSON `null` when the command was successfull or a JSON with an error field on error."
+  d: "JSON `null` when the command was successful or a JSON with an error field on error."
 
 {% enditemplate %}
 '''
